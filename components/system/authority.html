@@ -44,9 +44,10 @@
                 treeSpid: -1,
                 treeIdName: 'id',
                 treePidName: 'parentId',
+                treeDefaultClose: true,
                 elem: '#auth-table',
                 url: config.base_server + '/sys/authorities/query',
-                method: 'GET',
+                method: 'get',
                 where: {
                     access_token: config.getToken().access_token
                 },
