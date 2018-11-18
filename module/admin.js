@@ -76,8 +76,9 @@ layui.define(['config', 'layer'], function (exports) {
             param.type = 1;
             param.area = param.area ? param.area : '450px';
             param.offset = param.offset ? param.offset : '60px';
-            param.resize ? param.resize : false;
-            param.shade ? param.shade : .2;
+            param.resize = param.resize ? param.resize : false;
+            param.shade = param.shade ? param.shade : 0.4;
+            param.maxmin  = param.maxmin  ? param.maxmin  : true;
             param.success = function (layero, index) {
                 sCallBack ? sCallBack(layero, index) : '';
                 $(layero).children('.layui-layer-content').load(param.path);
