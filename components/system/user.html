@@ -28,7 +28,7 @@
 <!-- 表格操作列 -->
 <script type="text/html" id="user-table-bar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
-    <a class="layui-btn layui-btn-xs" lay-event="reset">重置密码</a>
+    <a class="layui-btn layui-btn-xs" lay-event="assignRole">分配角色</a>
 </script>
 
 <!-- 表格状态列 -->
@@ -68,7 +68,7 @@
                     }, title: '创建时间'
                 },
                 {field: 'state', sort: true, templet: '#user-tpl-state', title: '状态'},
-                {align: 'center', toolbar: '#user-table-bar', title: '操作'}
+                {align: 'center', width: 140, toolbar: '#user-table-bar', title: '操作'}
             ]]
         });
 
@@ -81,21 +81,16 @@
         table.on('tool(user-table)', function (obj) {
             var data = obj.data;
             var layEvent = obj.event;
-
             if (layEvent === 'edit') { // 修改
                 showEditModel(data);
-            } else if (layEvent === 'reset') { // 重置密码
-                layer.confirm('确定重置此用户的密码吗？', function (i) {
-                    layer.close(i);
-                    layer.load(2);
-                    admin.req('user/state?u=' + obj.data.userId, {}, function (data) {
-                        layer.closeAll('loading');
-                        if (data.code === 200) {
-                            layer.msg(data.msg, {icon: 1});
-                        } else {
-                            layer.msg(data.msg, {icon: 2});
-                        }
-                    }, 'GET');
+            } else if (layEvent === 'assignRole') { // 分配角色
+                admin.putTempData('t_user', data);
+                admin.popupCenter({
+                    title: '分配角色',
+                    path: 'components/system/user_role_form.html',
+                    finish: function () {
+                        table.reload('user-table', {});
+                    }
                 });
             }
         });
@@ -137,29 +132,6 @@
                     form.render('checkbox');
                 }
             }, 'PUT');
-
-            // $.ajax({
-            //     url: 'http://localhost:8088/user/state',
-            //     // data: field,
-            //     type: 'PUT',
-            //     dataType: 'JSON',
-            //     contentType: 'application/json',
-            //     beforeSend: function(request) {
-            //         // console.log(data);
-            //         var token = config.getToken();
-            //         if (token) {
-            //             console.log('Bearer ' + token.access_token);
-            //             request.setRequestHeader('Authorization', 'Bearer ' + token.access_token);
-            //         }
-            //     },
-            //     success: function (data) {
-            //         console.log(data);
-            //         alert("success")
-            //     },
-            //     error: function (xhr) {
-            //         alert("error")
-            //     }
-            // });
         });
     });
 </script>

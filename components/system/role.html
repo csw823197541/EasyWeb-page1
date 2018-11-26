@@ -46,7 +46,7 @@
 <script type="text/html" id="role-table-bar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-xs" lay-event="auth">权限管理</a>
+    <a class="layui-btn layui-btn-xs" lay-event="auth">绑定权限</a>
 </script>
 
 <script>
@@ -145,7 +145,7 @@
             layer.confirm('确定要删除吗？', function (i) {
                 layer.close(i);
                 layer.load(2);
-                admin.req('user/state?a=' + obj.data.roleId, {}, function (data) {
+                admin.req('/sys/roles/' + obj.data.id, {}, function (data) {
                     layer.closeAll('loading');
                     if (data.code === 200) {
                         layer.msg(data.msg, {icon: 1});
@@ -153,7 +153,7 @@
                     } else {
                         layer.msg(data.msg, {icon: 2});
                     }
-                }, 'GET');
+                }, 'DELETE');
             });
         };
 
@@ -161,8 +161,8 @@
         var showPermDialog = function (roleId) {
             layer.open({
                 type: 1,
-                title: '权限管理',
-                area: ['500px', '400px'],
+                title: '绑定权限',
+                area: ['600px', '400px'],
                 offset: '60px',
                 content: '<ul id="treeAuth" class="ztree" style="padding: 25px 0px 20px 60px;"></ul>',
                 btn: ['保存', '关闭'],

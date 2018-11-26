@@ -7,7 +7,7 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
     var element = layui.element;
     var form = layui.form;
 
-    var index = {
+    var main = {
         // 渲染左侧导航栏
         initLeftNav: function () {
             // 判断权限
@@ -66,9 +66,9 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
         },
         // 路由注册
         initRouter: function () {
-            index.regRouter(config.menus);
+            main.regRouter(config.menus);
             Q.init({
-                index: 'console'
+                main: 'console'
             });
         },
         // 使用递归循环注册
@@ -78,11 +78,11 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
                     Q.reg(data.url.substring(2), function () {
                         var menuId = data.url.substring(2);
                         var menuPath = 'components/' + data.path;
-                        index.loadView(menuId, menuPath, data.name);
+                        main.loadView(menuId, menuPath, data.name);
                     });
                 }
                 if (data.subMenus) {
-                    index.regRouter(data.subMenus);
+                    main.regRouter(data.subMenus);
                 }
             });
         },
@@ -145,7 +145,7 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
                     success(data.user);
                 } else {
                     layer.msg('获取用户失败', {icon: 2});
-                    // location.replace('login.html');
+                    location.replace('index.html');
                 }
             }, 'GET');
         },
@@ -155,7 +155,8 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
             $('#btnLogout').click(function () {
                 layer.confirm('确定退出登录？', function () {
                     config.removeToken();
-                    location.replace('login.html');
+
+                    location.replace('index.html');
                 });
             });
             // 修改密码
@@ -197,7 +198,7 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
             }
 
             Q.reg(menuId, function () {
-                index.loadView(menuId, url, title);
+                main.loadView(menuId, url, title);
             });
 
             Q.go(menuId);
@@ -214,5 +215,5 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
         Q.go(layId);
     });
 
-    exports('index', index);
+    exports('main', main);
 });

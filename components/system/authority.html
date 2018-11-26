@@ -61,13 +61,13 @@
                     {field: 'orderNumber', width: 80, align: 'center', title: '排序号'},
                     {
                         field: 'isMenu', width: 80, align: 'center', templet: function (d) {
-                            if (d.isMenu === 1) {
-                                return '<span class="layui-badge layui-bg-gray">按钮</span>';
+                            if (d.menuType === 1) {
+                                return '<span class="layui-badge layui-bg-green">按钮</span>';
                             }
                             if (d.parentId === -1) {
                                 return '<span class="layui-badge layui-bg-blue">目录</span>';
                             } else {
-                                return '<span class="layui-badge-rim">菜单</span>';
+                                return '<span class="layui-badge layui-bg-cyan">菜单</span>';
                             }
                         }, title: '类型'
                     },
@@ -82,23 +82,21 @@
         table.on('tool(auth-table)', function (obj) {
             var data = obj.data;
             var layEvent = obj.event;
-
             if (layEvent === 'edit') { // 修改
                 showEditModel(data);
             } else if (layEvent === 'del') { // 删除权限
-                layer.confirm('确定删除此权限吗？', function () {
+                layer.confirm('确定删除此权限吗？', function (i) {
+                    layer.close(i);
                     layer.load(2);
-                    // $.post('system/authorities/delete', {
-                    //     authorityId: obj.data.authorityId
-                    // }, function (data) {
-                    //     layer.closeAll('loading');
-                    //     if (data.code == 200) {
-                    //         layer.msg(data.msg, {icon: 1});
-                    //         renderTable();
-                    //     } else {
-                    //         layer.msg(data.msg, {icon: 2});
-                    //     }
-                    // });
+                    admin.req('/sys/authorities/' + obj.data.id, {}, function (data) {
+                        layer.closeAll('loading');
+                        if (data.code === 200) {
+                            layer.msg(data.msg, {icon: 1});
+                            obj.del();
+                        } else {
+                            layer.msg(data.msg, {icon: 2});
+                        }
+                    }, 'DELETE');
                 });
             }
         });
@@ -115,6 +113,7 @@
             admin.popupCenter({
                 title: title,
                 path: 'components/system/authority_form.html',
+                maxmin: true,
                 finish: function () {
                     renderTable();
                 }

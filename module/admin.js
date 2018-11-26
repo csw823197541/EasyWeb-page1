@@ -78,7 +78,7 @@ layui.define(['config', 'layer'], function (exports) {
             param.offset = param.offset ? param.offset : '60px';
             param.resize = param.resize ? param.resize : false;
             param.shade = param.shade ? param.shade : 0.4;
-            param.maxmin  = param.maxmin  ? param.maxmin  : true;
+            // param.maxmin = param.maxmin ? param.maxmin : true;
             param.success = function (layero, index) {
                 sCallBack ? sCallBack(layero, index) : '';
                 $(layero).children('.layui-layer-content').load(param.path);
@@ -122,8 +122,9 @@ layui.define(['config', 'layer'], function (exports) {
             var successCallback = param.success;
             param.success = function (result, status, xhr) {
                 // 判断登录过期和没有权限
+                console.log(result);
                 var jsonRs;
-                if ('json' === param.dataType.toLowerCase()) {
+                if ('json' === param.dataType.toLowerCase() || 'application/json' === param.dataType.toLowerCase()) {
                     jsonRs = result;
                 } else if ('html' === param.dataType.toLowerCase() || 'text' === param.dataType.toLowerCase()) {
                     jsonRs = admin.parseJSON(result);
@@ -132,12 +133,12 @@ layui.define(['config', 'layer'], function (exports) {
                     if (jsonRs.code === 401) {
                         config.removeToken();
                         layer.msg('登录过期', {icon: 2, time: 1500}, function () {
-                            location.replace('/login.html');
+                            location.replace('/index.html');
                         }, 1000);
-                        return;
+                        // return;
                     } else if (jsonRs.code === 403) {
-                        layer.msg('没有权限', {icon: 2});
-                        return;
+                        layer.msg(jsonRs.msg, {icon: 2});
+                        // return;
                     }
                 }
                 successCallback(result, status, xhr);
@@ -152,7 +153,7 @@ layui.define(['config', 'layer'], function (exports) {
             var user = config.getUser();
             if (user.authorities) {
                 for (var i = 0; i < user.authorities.length; i++) {
-                    if (auth == user.authorities[i].authorityUrl) {
+                    if (auth === user.authorities[i].authorityUrl) {
                         return true;
                     }
                 }

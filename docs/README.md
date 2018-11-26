@@ -46,7 +46,7 @@ mvvm框架 | [pandyle.js](https://gitee.com/pandarrr/pandyle) (专为jquery编�
 |-module                // js模块 (使用layui的模块开发方式)
 |     |-admin.js                // admin模块
 |     |-config.js                // config模块
-|     |-index.js                // index模块
+|     |-main.js                // index模块
 |
 |-index.html            // 主界面
 |-login.html            // 登陆界面

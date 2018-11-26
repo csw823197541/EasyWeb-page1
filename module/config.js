@@ -55,28 +55,33 @@ layui.define(function (exports) {
                 url: '#!authorities',
                 path: 'system/authority.html'
             }, {
+                name: '操作日志',
+                url: '#!operate_record',
+                path: 'system/operate_record.html'
+            }, {
                 name: '登录日志',
                 url: '#!login_record',
-                path: 'system/login_record.html',
-                auth: 'system/loginRecord'
+                path: 'system/login_record.html'
             }]
-        }, {
-            name: '多级菜单',
-            url: 'javascript:;',
-            icon: 'layui-icon-unlink',
-            subMenus: [{
-                name: '二级菜单',
-                url: 'javascript:;',
-                subMenus: [{
-                    name: '三级菜单',
-                    url: 'javascript:;'
-                }]
-            }]
-        }, {
-            name: '一级菜单',
-            url: 'javascript:;',
-            icon: 'layui-icon-unlink'
-        }],
+        }
+        // , {
+        //     name: '多级菜单',
+        //     url: 'javascript:;',
+        //     icon: 'layui-icon-unlink',
+        //     subMenus: [{
+        //         name: '二级菜单',
+        //         url: 'javascript:;',
+        //         subMenus: [{
+        //             name: '三级菜单',
+        //             url: 'javascript:;'
+        //         }]
+        //     }]
+        // }, {
+        //     name: '一级菜单',
+        //     url: 'javascript:;',
+        //     icon: 'layui-icon-unlink'
+        // }
+        ],
         // 当前登录的用户
         getUser: function () {
             var u = layui.data(config.tableName).login_user;
