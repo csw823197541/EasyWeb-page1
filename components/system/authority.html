@@ -55,9 +55,9 @@
                 cols: [[
                     // {type: 'numbers'},
                     {field: 'id', width: 50, sort: true, title: 'ID'},
-                    {field: 'authorityName', minWidth: 200, title: '权限名称'},
-                    {field: 'authorityUrl', width: 180, title: '权限标识(url)'},
-                    {field: 'menuUrl', width: 180, title: '菜单路径(url)'},
+                    {field: 'authorityName', minWidth: 180, title: '权限名称'},
+                    {field: 'authorityUrl', minWidth: 190, title: '权限标识(url)'},
+                    {field: 'menuUrl', width: 150, title: '菜单路径(url)'},
                     {field: 'orderNumber', width: 80, align: 'center', title: '排序号'},
                     {
                         field: 'isMenu', width: 80, align: 'center', templet: function (d) {
@@ -88,7 +88,7 @@
                 layer.confirm('确定删除此权限吗？', function (i) {
                     layer.close(i);
                     layer.load(2);
-                    admin.req('/sys/authorities/' + obj.data.id, {}, function (data) {
+                    admin.req('/sys/authorities/delete?id=' + obj.data.id, {}, function (data) {
                         layer.closeAll('loading');
                         if (data.code === 200) {
                             layer.msg(data.msg, {icon: 1});
@@ -169,7 +169,8 @@
                             layer.closeAll('loading');
                             if (200 === data.code) {
                                 layer.msg(data.msg, {icon: 1});
-                                table.reload('auth-table');
+                                // table.reload('auth-table');
+                                renderTable();
                             } else {
                                 layer.msg(data.msg, {icon: 2});
                             }

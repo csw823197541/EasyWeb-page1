@@ -145,7 +145,7 @@
             layer.confirm('确定要删除吗？', function (i) {
                 layer.close(i);
                 layer.load(2);
-                admin.req('/sys/roles/' + obj.data.id, {}, function (data) {
+                admin.req('/sys/roles/delete?id=' + obj.data.id, {}, function (data) {
                     layer.closeAll('loading');
                     if (data.code === 200) {
                         layer.msg(data.msg, {icon: 1});
