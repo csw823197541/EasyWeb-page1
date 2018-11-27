@@ -79,6 +79,7 @@ layui.define(['config', 'layer'], function (exports) {
             param.resize = param.resize ? param.resize : false;
             param.shade = param.shade ? param.shade : 0.4;
             // param.maxmin = param.maxmin ? param.maxmin : true;
+            // param.btnAlign = param.btnAlign ? param.btnAlign : 'r';
             param.success = function (layero, index) {
                 sCallBack ? sCallBack(layero, index) : '';
                 $(layero).children('.layui-layer-content').load(param.path);

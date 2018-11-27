@@ -165,7 +165,15 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
             });
             // 个人信息
             $('#setInfo').click(function () {
+                admin.popupCenter({
+                    title: '个人信息',
+                    path: 'components/tpl/userInfo.html',
+                    area: ['750px', '480px'],
+                    btnAlign: 'l',
+                    finish: function () {
 
+                    }
+                });
             });
             // 消息
             $('#btnMessage').click(function () {

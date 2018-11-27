@@ -1,0 +1,73 @@
+<div class="layui-form timo-compile user-info-page">
+    <div class="user-info">
+        <div class="user-avatar-box">
+            <img class="user-avatar" src="" alt="">
+            <span class="edit-avatar">修改头像</span>
+        </div>
+        <ul class="detail-info">
+            <li>账号：<span></span></li>
+            <li>昵称：<span></span></li>
+            <li>性别：<span></span></li>
+            <li>电话：<span></span></li>
+            <li>邮箱：<span></span></li>
+        </ul>
+    </div>
+    <form class="user-edit">
+        <input type="hidden" name="username"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户昵称</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="nickname" placeholder="请输入用户昵称">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">电话号码</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="phone" placeholder="请输入电话号码">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="email" placeholder="请输入邮箱">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择性别</label>
+            <div class="layui-input-inline">
+                <input type="radio" name="sex" value="1" title="男" checked>
+                <div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i>
+                    <div>男</div>
+                </div>
+                <input type="radio" name="sex" value="2" title="女">
+                <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
+                    <div>女</div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="remark"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item timo-finally">
+            <button class="layui-btn" lay-filter="user-form-submit" lay-submit>保存</button>
+            <button class="layui-btn layui-btn-primary" ew-event="closeDialog" type="button">取消</button>
+        </div>
+        <!--<div class="layui-form-item timo-finally">-->
+            <!--<button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>-->
+            <!--<a class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</a>-->
+        <!--</div>-->
+    </form>
+    <!-- 编辑头像面板 -->
+    <div class="canvas-panel">
+        <img class="canvas-bg"/>
+        <div class="canvas-shade"></div>
+        <canvas class="canvas-crop"></canvas>
+    </div>
+    <div class="canvas-group layui-btn-group">
+        <button class="upload-close layui-btn layui-btn-primary layui-btn-sm">取消</button>
+        <button class="upload-btn layui-btn layui-btn-primary layui-btn-sm">保存</button>
+    </div>
+</div>
