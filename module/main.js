@@ -68,7 +68,7 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
         initRouter: function () {
             main.regRouter(config.menus);
             Q.init({
-                main: 'console'
+                index: 'console'
             });
         },
         // 使用递归循环注册
@@ -139,8 +139,8 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
             layer.load(2);
             admin.req('/sys/users/userInfo', null, function (data) {
                 layer.closeAll('loading');
-                console.log(data);
                 if (200 === data.code) {
+                    console.log(data.user);
                     config.putUser(data.user);
                     success(data.user);
                 } else {
@@ -155,7 +155,6 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
             $('#btnLogout').click(function () {
                 layer.confirm('确定退出登录？', function () {
                     config.removeToken();
-
                     location.replace('index.html');
                 });
             });
@@ -169,9 +168,8 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
                     title: '个人信息',
                     path: 'components/tpl/userInfo.html',
                     area: ['750px', '480px'],
-                    btnAlign: 'l',
                     finish: function () {
-
+                        location.replace('main.html');
                     }
                 });
             });

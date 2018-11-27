@@ -107,7 +107,7 @@
                 type: 'POST',
                 dataType: 'JSON',
                 success: function (data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data.access_token) {
                         config.putToken(data);
                         layer.msg('登录成功', {icon: 1}, function () {

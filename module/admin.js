@@ -133,13 +133,11 @@ layui.define(['config', 'layer'], function (exports) {
                 if (jsonRs) {
                     if (jsonRs.code === 401) {
                         config.removeToken();
-                        layer.msg('登录过期', {icon: 2, time: 1500}, function () {
+                        layer.msg('登录信息过期', {icon: 2, time: 1500}, function () {
                             location.replace('/index.html');
                         }, 1000);
-                        // return;
                     } else if (jsonRs.code === 403) {
                         layer.msg(jsonRs.msg, {icon: 2});
-                        // return;
                     }
                 }
                 successCallback(result, status, xhr);

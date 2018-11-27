@@ -1,7 +1,7 @@
-<div class="layui-form timo-compile user-info-page">
+<div class="timo-compile user-info-page">
     <div class="user-info">
         <div class="user-avatar-box">
-            <img class="user-avatar" src="" alt="">
+            <img class="user-avatar" src="assets/images/head.png" alt="">
             <span class="edit-avatar">修改头像</span>
         </div>
         <ul class="detail-info">
@@ -12,37 +12,31 @@
             <li>邮箱：<span></span></li>
         </ul>
     </div>
-    <form class="user-edit">
-        <input type="hidden" name="username"/>
+    <form id = "user-info-form" class="user-edit layui-form model-form" lay-filter="user-info-form">
+        <input name="id" type="hidden"/>
         <div class="layui-form-item">
-            <label class="layui-form-label">用户昵称</label>
+            <label class="layui-form-label">账号</label>
             <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="nickname" placeholder="请输入用户昵称">
+                <input name="username" placeholder="请输入账号" type="text" class="layui-input" maxlength="20" lay-verify="required" required/>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">电话号码</label>
+            <label class="layui-form-label">用户名</label>
             <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="phone" placeholder="请输入电话号码">
+                <input name="nickName" placeholder="请输入用户名" type="text" class="layui-input" maxlength="20" lay-verify="required" required/>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">邮箱</label>
+            <label class="layui-form-label">手机号</label>
             <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="email" placeholder="请输入邮箱">
+                <input name="phone" placeholder="请输入手机号" type="text" class="layui-input" lay-verify="required|phone" required/>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">选择性别</label>
-            <div class="layui-input-inline">
-                <input type="radio" name="sex" value="1" title="男" checked>
-                <div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i>
-                    <div>男</div>
-                </div>
-                <input type="radio" name="sex" value="2" title="女">
-                <div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i>
-                    <div>女</div>
-                </div>
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="sex" value="男" title="男" checked/>
+                <input type="radio" name="sex" value="女" title="女"/>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
@@ -52,13 +46,9 @@
             </div>
         </div>
         <div class="layui-form-item timo-finally">
-            <button class="layui-btn" lay-filter="user-form-submit" lay-submit>保存</button>
+            <button class="layui-btn" lay-filter="user-info-form-submit" lay-submit>保存</button>
             <button class="layui-btn layui-btn-primary" ew-event="closeDialog" type="button">取消</button>
         </div>
-        <!--<div class="layui-form-item timo-finally">-->
-            <!--<button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>-->
-            <!--<a class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</a>-->
-        <!--</div>-->
     </form>
     <!-- 编辑头像面板 -->
     <div class="canvas-panel">
@@ -71,3 +61,38 @@
         <button class="upload-btn layui-btn layui-btn-primary layui-btn-sm">保存</button>
     </div>
 </div>
+
+<script>
+    layui.use(['layer', 'admin', 'form', 'config'], function () {
+        var layer = layui.layer;
+        var admin = layui.admin;
+        var form = layui.form;
+        var config = layui.config;
+        var $ = layui.jquery;
+
+        form.render('radio');
+
+        // 回显user数据
+        var user = config.getUser();
+        $('#user-info-form').attr('method', 'POST');
+        if (user) {
+            form.val('user-info-form', user);
+            $('#user-info-form').attr('method', 'PUT');
+        }
+
+        // 表单提交事件
+        form.on('submit(user-info-form-submit)', function (data) {
+            layer.load(2);
+            admin.req('/sys/users', data.field, function (data) {
+                layer.closeAll('loading');
+                if (data.code === 200) {
+                    layer.msg(data.msg, {icon: 1});
+                    admin.finishPopupCenter();
+                } else {
+                    layer.msg(data.msg, {icon: 2});
+                }
+            }, $('#user-info-form').attr('method'));
+            return false;
+        });
+    });
+</script>

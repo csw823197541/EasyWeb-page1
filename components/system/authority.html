@@ -88,7 +88,7 @@
                 layer.confirm('确定删除此权限吗？', function (i) {
                     layer.close(i);
                     layer.load(2);
-                    admin.req('/sys/authorities/delete?id=' + obj.data.id, {}, function (data) {
+                    admin.req('/sys/authorities?id=' + obj.data.id, {}, function (data) {
                         layer.closeAll('loading');
                         if (data.code === 200) {
                             layer.msg(data.msg, {icon: 1});

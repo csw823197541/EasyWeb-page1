@@ -180,8 +180,15 @@
                     admin.req('/sys/roles/authTree', {
                         roleId: roleId
                     }, function (data) {
-                        $.fn.zTree.init($('#treeAuth'), setting, data);
-                        layer.closeAll('loading');
+                        // $.fn.zTree.init($('#treeAuth'), setting, data);
+                        // layer.closeAll('loading');
+                        if (200 === data.code) {
+                            $.fn.zTree.init($('#treeAuth'), setting, data.data);
+                            layer.closeAll('loading');
+                        } else {
+                            layer.msg(data.msg, {icon: 2});
+                            layer.closeAll('loading');
+                        }
                     }, 'POST');
                 },
                 yes: function (index) {

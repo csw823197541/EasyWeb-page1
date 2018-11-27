@@ -3,7 +3,7 @@ layui.define(function (exports) {
     var config = {
         // base_server: 'json/', // 接口地址，实际项目请换成http形式的地址
         base_server: 'http://localhost:8088', // 接口地址，实际项目请换成http形式的地址
-        tableName: 'easyweb',  // 存储表名
+        tableName: 'cswWeb',  // 存储表名
         autoRender: false,  // 窗口大小改变后是否自动重新渲染表格，解决layui数据表格非响应式的问题，目前实现的还不是很好，暂时关闭该功能
         pageTabs: true,   // 是否开启多标签
         // 获取缓存的token
@@ -52,16 +52,16 @@ layui.define(function (exports) {
                 path: 'system/role.html'
             }, {
                 name: '权限管理',
-                url: '#!authorities',
+                url: '#!authority',
                 path: 'system/authority.html'
             }, {
                 name: '操作日志',
                 url: '#!operate_record',
-                path: 'system/operate_record.html'
+                path: 'system/operateRecord.html'
             }, {
                 name: '登录日志',
                 url: '#!login_record',
-                path: 'system/login_record.html'
+                path: 'system/loginRecord.html'
             }]
         }
         // , {
