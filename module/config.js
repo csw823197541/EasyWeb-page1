@@ -56,11 +56,11 @@ layui.define(function (exports) {
                 path: 'system/authority.html'
             }, {
                 name: '操作日志',
-                url: '#!operate_record',
+                url: '#!operateRecord',
                 path: 'system/operateRecord.html'
             }, {
                 name: '登录日志',
-                url: '#!login_record',
+                url: '#!loginRecord',
                 path: 'system/loginRecord.html'
             }]
         }

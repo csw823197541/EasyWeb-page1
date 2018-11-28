@@ -5,31 +5,38 @@
             <span class="edit-avatar">修改头像</span>
         </div>
         <ul class="detail-info">
-            <li>账号：<span></span></li>
-            <li>昵称：<span></span></li>
-            <li>性别：<span></span></li>
-            <li>电话：<span></span></li>
-            <li>邮箱：<span></span></li>
+            <li>账号：<span>{{username}}</span></li>
+            <li>用户名：<span>{{nickName}}</span></li>
+            <li>手机号：<span>{{phone}}</span></li>
+            <li>性别：<span>{{sex}}</span></li>
+            <li>角色：
+                <span p-each="roles">
+                    <span>{{roleName}}</span>
+                </span>
+            </li>
         </ul>
     </div>
-    <form id = "user-info-form" class="user-edit layui-form model-form" lay-filter="user-info-form">
+    <form id="user-info-form" class="user-edit layui-form model-form" lay-filter="user-info-form">
         <input name="id" type="hidden"/>
         <div class="layui-form-item">
             <label class="layui-form-label">账号</label>
             <div class="layui-input-inline">
-                <input name="username" placeholder="请输入账号" type="text" class="layui-input" maxlength="20" lay-verify="required" required/>
+                <input name="username" placeholder="请输入账号" type="text" class="layui-input" maxlength="20"
+                       lay-verify="required" required/>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
             <div class="layui-input-inline">
-                <input name="nickName" placeholder="请输入用户名" type="text" class="layui-input" maxlength="20" lay-verify="required" required/>
+                <input name="nickName" placeholder="请输入用户名" type="text" class="layui-input" maxlength="20"
+                       lay-verify="required" required/>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">手机号</label>
             <div class="layui-input-inline">
-                <input name="phone" placeholder="请输入手机号" type="text" class="layui-input" lay-verify="required|phone" required/>
+                <input name="phone" placeholder="请输入手机号" type="text" class="layui-input" lay-verify="required|phone"
+                       required/>
             </div>
         </div>
         <div class="layui-form-item">
@@ -74,6 +81,7 @@
 
         // 回显user数据
         var user = config.getUser();
+        $('.user-info-page .user-info .detail-info').vm(user);
         $('#user-info-form').attr('method', 'POST');
         if (user) {
             form.val('user-info-form', user);

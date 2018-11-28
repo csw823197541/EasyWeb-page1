@@ -63,11 +63,11 @@
         table.render({
             elem: '#role-table',
             url: config.base_server + '/sys/roles/query',
-            method: 'GET',
+            method: 'POST',
             where: {
                 access_token: config.getToken().access_token
             },
-            page: false,
+            page: true,
             cols: [[
                 // {type: 'numbers'},
                 {field: 'id', sort: true, title: 'ID'},
@@ -111,7 +111,7 @@
             } else if (obj.event === 'del') { //删除
                 doDelete(obj);
             } else if (obj.event === 'auth') {
-                showPermDialog(data.id);
+                showPermDialog(data.id, data.roleName);
             }
         });
 
@@ -158,10 +158,10 @@
         };
 
         // 权限管理
-        var showPermDialog = function (roleId) {
+        var showPermDialog = function (roleId, roleName) {
             layer.open({
                 type: 1,
-                title: '绑定权限',
+                title: roleName + '—绑定权限',
                 area: ['600px', '400px'],
                 offset: '60px',
                 content: '<ul id="treeAuth" class="ztree" style="padding: 25px 0px 20px 60px;"></ul>',
