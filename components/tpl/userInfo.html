@@ -9,9 +9,9 @@
             <li>用户名：<span>{{nickName}}</span></li>
             <li>手机号：<span>{{phone}}</span></li>
             <li>性别：<span>{{sex}}</span></li>
-            <li>角色：
+            <li id="roleTips">角色：
                 <span p-each="roles">
-                    <span>{{roleName}}</span>
+                    <span>{{roleName}}、</span>
                 </span>
             </li>
         </ul>
@@ -87,6 +87,21 @@
             form.val('user-info-form', user);
             $('#user-info-form').attr('method', 'PUT');
         }
+
+        var str = '';
+        for (var i = 0; i < user.roles.length; i++) {
+            str += user.roles[i].roleName + '、';
+        }
+        str = str.substring(0, str.length - 1);
+        var tips;
+        $('#roleTips').on({
+            mouseenter: function () {
+                tips = layer.tips(str, '#roleTips', {maxWidth: 500});
+            },
+            mouseleave: function () {
+                layer.close(tips);
+            }
+        });
 
         // 表单提交事件
         form.on('submit(user-info-form-submit)', function (data) {

@@ -8,7 +8,7 @@
     </div>
     <div class="layui-card-body">
         <div class="layui-form toolbar">
-            搜索：<input id="role-edit-search" class="layui-input search-input" type="text" placeholder="输入关键字"/>&emsp;
+            搜索：<input id="role-edit-search" class="layui-input search-input" type="text" placeholder="输入角色名称"/>&emsp;
             <button id="role-btn-search" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
             <button id="role-btn-add" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
         </div>
@@ -23,9 +23,9 @@
     <form id="role-form" lay-filter="role-form" class="layui-form model-form">
         <input name="id" type="hidden"/>
         <div class="layui-form-item">
-            <label class="layui-form-label">角色名</label>
+            <label class="layui-form-label">角色名称</label>
             <div class="layui-input-block">
-                <input name="roleName" placeholder="请输入角色名" type="text" class="layui-input" maxlength="20"
+                <input name="roleName" placeholder="请输入角色名称" type="text" class="layui-input" maxlength="20"
                        lay-verify="required" required/>
             </div>
         </div>
@@ -71,7 +71,7 @@
             cols: [[
                 // {type: 'numbers'},
                 {field: 'id', sort: true, title: 'ID'},
-                {field: 'roleName', sort: true, title: '角色名'},
+                {field: 'roleName', sort: true, title: '角色名称'},
                 {field: 'comments', sort: true, title: '备注'},
                 {
                     field: 'createTime', sort: true, templet: function (d) {
