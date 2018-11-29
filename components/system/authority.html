@@ -44,7 +44,7 @@
                 treeSpid: -1,
                 treeIdName: 'id',
                 treePidName: 'parentId',
-                treeDefaultClose: true,
+                // treeDefaultClose: true,
                 elem: '#auth-table',
                 url: config.base_server + '/sys/authorities/query',
                 method: 'get',
@@ -58,7 +58,6 @@
                     {field: 'authorityName', minWidth: 180, title: '权限名称'},
                     {field: 'authorityUrl', minWidth: 190, title: '权限标识(url)'},
                     {field: 'menuUrl', width: 150, title: '菜单路径(url)'},
-                    {field: 'orderNumber', width: 80, align: 'center', title: '排序号'},
                     {
                         field: 'isMenu', width: 80, align: 'center', templet: function (d) {
                             if (d.menuType === 1) {
@@ -71,7 +70,8 @@
                             }
                         }, title: '类型'
                     },
-                    {templet: '#auth-state', width: 120, align: 'center', title: '操作', toolbar: '#auth-state'}
+                    {field: 'orderNumber', width: 80, align: 'center', title: '排序号'},
+                    {templet: '#auth-state', width: 120, fixed: "right", align: 'center', title: '操作', toolbar: '#auth-state'}
                 ]]
             });
         };

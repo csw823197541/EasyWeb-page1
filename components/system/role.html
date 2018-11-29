@@ -10,7 +10,7 @@
         <div class="layui-form toolbar">
             搜索：<input id="role-edit-search" class="layui-input search-input" type="text" placeholder="输入角色名称"/>&emsp;
             <button id="role-btn-search" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
-            <button id="role-btn-add" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+            <button id="role-btn-add" class="layui-btn icon-btn"><i class="layui-icon">&#xe608;</i>添加</button>
         </div>
 
         <!-- 数据表格 -->
@@ -46,7 +46,35 @@
 <script type="text/html" id="role-table-bar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-xs" lay-event="lookUser"><i class="layui-icon">&#xe615;</i>用户</a>
     <a class="layui-btn layui-btn-xs" lay-event="auth">绑定权限</a>
+</script>
+
+
+<!--角色下的用户表格-->
+<script type="text/html" id="role-user-table">
+    <div class="layui-card" style="width: 100%">
+        <div class="layui-card-body">
+            <div class="layui-form toolbar">
+                搜索：
+                <select id="user-search-key">
+                    <option value="">-请选择-</option>
+                    <option value="username">账号</option>
+                    <option value="nickName">用户名</option>
+                    <option value="phone">手机号</option>
+                </select>
+                <input id="user-search-value" class="layui-input search-input" type="text" placeholder="输入关键字"/>&emsp;
+                <button id="user-btn-search" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+                <button id="user-btn-delete" class="layui-btn icon-btn"><i class="layui-icon">&#xe640;</i>删除</button>
+            </div>
+            <table class="layui-table" id="user-table" lay-filter="user-table"></table>
+        </div>
+    </div>
+</script>
+<!-- 表格状态列 -->
+<script type="text/html" id="user-tpl-state">
+    <input type="checkbox" lay-filter="user-tpl-state" value="{{d.userId}}" lay-skin="switch" disabled lay-text="正常|锁定"
+           {{d.state==0?'checked':''}}/>
 </script>
 
 <script>
@@ -71,14 +99,14 @@
             cols: [[
                 // {type: 'numbers'},
                 {field: 'id', sort: true, title: 'ID'},
-                {field: 'roleName', sort: true, title: '角色名称'},
-                {field: 'comments', sort: true, title: '备注'},
+                {field: 'roleName', width: '22%', sort: true, title: '角色名称'},
+                {field: 'comments', width: '20%', sort: true, title: '备注'},
                 {
-                    field: 'createTime', sort: true, templet: function (d) {
+                    field: 'createTime', width: '20%', sort: true, templet: function (d) {
                         return util.toDateString(d.createTime);
                     }, title: '创建时间'
                 },
-                {align: 'center', toolbar: '#role-table-bar', title: '操作'}
+                {align: 'center', width: '25%', fixed: "right", toolbar: '#role-table-bar', title: '操作'}
             ]]
         });
 
@@ -112,6 +140,8 @@
                 doDelete(obj);
             } else if (obj.event === 'auth') {
                 showPermDialog(data.id, data.roleName);
+            } else if (obj.event === 'lookUser') {
+                lookRoleUserTable(data);
             }
         });
 
@@ -213,7 +243,93 @@
                     }, 'POST');
                 }
             });
-        }
+        };
+
+        // 查看用户
+        var lookRoleUserTable = function (data) {
+            layer.load(2);
+            layer.open({
+                type: 1,
+                title: data.roleName + '-用户列表',
+                content: $('#role-user-table').html(),
+                area: ['800px', '400px'],
+                success: function () {
+                    layui.use(['form', 'table', 'util', 'config', 'admin'], function () {
+                        var form = layui.form;
+                        var table = layui.table;
+                        var config = layui.config;
+                        var layer1 = layui.layer;
+                        var util = layui.util;
+                        var admin = layui.admin;
+                        var $ = layui.jquery;
+                        form.render('select'); //刷新select选择框渲染
+                        // 渲染表格
+                        table.render({
+                            elem: '#user-table',
+                            url: config.base_server + '/sys/users/queryByRole?roleId=' + data.id,
+                            method: 'POST',
+                            where: {
+                                access_token: config.getToken().access_token
+                            },
+                            page: false,
+                            cols: [[
+                                {type: 'checkbox'},
+                                {field: 'id', sort: true, title: 'ID'},
+                                {field: 'username', sort: true, title: '账号'},
+                                {field: 'nickName', sort: true, title: '用户名'},
+                                {field: 'phone', sort: true, title: '手机号'},
+                                {field: 'sex', sort: true, title: '性别'},
+                                {
+                                    sort: true, templet: function (d) {
+                                        return util.toDateString(d.createTime);
+                                    }, title: '创建时间'
+                                },
+                                {field: 'state', sort: true, templet: '#user-tpl-state', title: '状态'}
+                            ]]
+                        });
+
+                        layer.closeAll('loading');
+
+                        // 删除按钮点击事件
+                        $('#user-btn-delete').click(function () {
+                            var checkStatus = table.checkStatus('user-table'); //user-table 即为基础参数 id 对应的值
+                            var selectData = checkStatus.data;
+                            // console.log(selectData);
+                            if (selectData.length === 0) {
+                                layer.msg("请先选择一条记录！", {icon: 2});
+                            } else {
+                                var userIds = [];
+                                for (var j = 0; j < selectData.length; j++) {
+                                    userIds.push(selectData[j].id);
+                                }
+                                layer.confirm('确定删除选中的记录吗？', function (i) {
+                                    layer.close(i);
+                                    layer.load(2);
+                                    admin.req('/sys/users/deleteRoleUser?roleId=' + data.id + '&userIds=' + userIds, {}, function (data) {
+                                        layer.closeAll('loading');
+                                        if (data.code === 200) {
+                                            table.reload('user-table');
+                                            layer.msg(data.msg, {icon: 1});
+                                        } else {
+                                            layer.msg(data.msg, {icon: 2});
+                                        }
+                                    }, 'DELETE');
+                                });
+                            }
+
+                        });
+
+                        // 搜索按钮点击事件
+                        $('#user-btn-search').click(function () {
+                            var key = $('#user-search-key').val();
+                            var value = $('#user-search-value').val();
+                            table.reload('user-table', {where: {searchKey: key, searchValue: value}});
+                        });
+
+                    });
+                }
+            });
+        };
 
     });
 

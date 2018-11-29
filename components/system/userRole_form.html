@@ -49,14 +49,14 @@
                     formSelects.value('roleId', rds);
                 }
             } else {
-                layer.msg('获取角色失败', {icon: 2});
+                layer.msg(data.msg, {icon: 2});
             }
         }, 'GET');
 
         // 表单提交事件
         form.on('submit(user-role-form-submit)', function (data) {
             layer.load(2);
-            admin.req('/sys/users/assignRole?' + 'userId=' + data.field.id + '&roleId=' + data.field.roleId, {}, function (data) {
+            admin.req('/sys/users/assignRole?' + 'userId=' + data.field.id + '&roleIds=' + data.field.roleId, {}, function (data) {
                 layer.closeAll('loading');
                 if (data.code === 200) {
                     layer.msg(data.msg, {icon: 1});
