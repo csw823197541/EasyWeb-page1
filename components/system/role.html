@@ -52,28 +52,28 @@
 
 
 <!--角色下的用户表格-->
-<script type="text/html" id="role-user-table">
+<script type="text/html" id="role-user-model-table">
     <div class="layui-card" style="width: 100%">
         <div class="layui-card-body">
             <div class="layui-form toolbar">
                 搜索：
-                <select id="user-search-key">
+                <select id="role-user-search-key">
                     <option value="">-请选择-</option>
                     <option value="username">账号</option>
                     <option value="nickName">用户名</option>
                     <option value="phone">手机号</option>
                 </select>
-                <input id="user-search-value" class="layui-input search-input" type="text" placeholder="输入关键字"/>&emsp;
-                <button id="user-btn-search" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
-                <button id="user-btn-delete" class="layui-btn icon-btn"><i class="layui-icon">&#xe640;</i>删除</button>
+                <input id="role-user-search-value" class="layui-input search-input" type="text" placeholder="输入关键字"/>&emsp;
+                <button id="role-user-btn-search" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+                <button id="role-user-btn-delete" class="layui-btn icon-btn"><i class="layui-icon">&#xe640;</i>删除</button>
             </div>
-            <table class="layui-table" id="user-table" lay-filter="user-table"></table>
+            <table class="layui-table" id="role-user-table" lay-filter="user-table"></table>
         </div>
     </div>
 </script>
 <!-- 表格状态列 -->
-<script type="text/html" id="user-tpl-state">
-    <input type="checkbox" lay-filter="user-tpl-state" value="{{d.userId}}" lay-skin="switch" disabled lay-text="正常|锁定"
+<script type="text/html" id="role-user-tpl-state">
+    <input type="checkbox" lay-filter="role-user-tpl-state" value="{{d.userId}}" lay-skin="switch" disabled lay-text="正常|锁定"
            {{d.state==0?'checked':''}}/>
 </script>
 
@@ -193,7 +193,7 @@
                 type: 1,
                 title: roleName + '—绑定权限',
                 area: ['600px', '400px'],
-                offset: '60px',
+                // offset: '60px',
                 content: '<ul id="treeAuth" class="ztree" style="padding: 25px 0px 20px 60px;"></ul>',
                 btn: ['保存', '关闭'],
                 btnAlign: 'c',
@@ -251,82 +251,83 @@
             layer.open({
                 type: 1,
                 title: data.roleName + '-用户列表',
-                content: $('#role-user-table').html(),
+                content: $('#role-user-model-table').html(),
                 area: ['800px', '400px'],
                 success: function () {
-                    layui.use(['form', 'table', 'util', 'config', 'admin'], function () {
-                        var form = layui.form;
-                        var table = layui.table;
-                        var config = layui.config;
-                        var layer1 = layui.layer;
-                        var util = layui.util;
-                        var admin = layui.admin;
-                        var $ = layui.jquery;
-                        form.render('select'); //刷新select选择框渲染
-                        // 渲染表格
-                        table.render({
-                            elem: '#user-table',
-                            url: config.base_server + '/sys/users/queryByRole?roleId=' + data.id,
-                            method: 'POST',
-                            where: {
-                                access_token: config.getToken().access_token
+                    form.render('select'); //刷新select选择框渲染
+                    // 渲染表格
+                    table.render({
+                        elem: '#role-user-table',
+                        url: config.base_server + '/sys/users/queryByRole?roleId=' + data.id,
+                        method: 'POST',
+                        where: {
+                            access_token: config.getToken().access_token
+                        },
+                        page: false,
+                        cols: [[
+                            {type: 'checkbox'},
+                            {field: 'id', sort: true, title: 'ID'},
+                            {field: 'username', sort: true, title: '账号'},
+                            {field: 'nickName', sort: true, title: '用户名'},
+                            {field: 'phone', sort: true, title: '手机号'},
+                            {field: 'sex', sort: true, title: '性别'},
+                            {
+                                sort: true, templet: function (d) {
+                                    return util.toDateString(d.createTime);
+                                }, title: '创建时间'
                             },
-                            page: false,
-                            cols: [[
-                                {type: 'checkbox'},
-                                {field: 'id', sort: true, title: 'ID'},
-                                {field: 'username', sort: true, title: '账号'},
-                                {field: 'nickName', sort: true, title: '用户名'},
-                                {field: 'phone', sort: true, title: '手机号'},
-                                {field: 'sex', sort: true, title: '性别'},
-                                {
-                                    sort: true, templet: function (d) {
-                                        return util.toDateString(d.createTime);
-                                    }, title: '创建时间'
-                                },
-                                {field: 'state', sort: true, templet: '#user-tpl-state', title: '状态'}
-                            ]]
-                        });
+                            {field: 'state', sort: true, templet: '#role-user-tpl-state', title: '状态'}
+                        ]]
+                    });
 
-                        layer.closeAll('loading');
+                    layer.closeAll('loading');
 
-                        // 删除按钮点击事件
-                        $('#user-btn-delete').click(function () {
-                            var checkStatus = table.checkStatus('user-table'); //user-table 即为基础参数 id 对应的值
-                            var selectData = checkStatus.data;
-                            // console.log(selectData);
-                            if (selectData.length === 0) {
-                                layer.msg("请先选择一条记录！", {icon: 2});
-                            } else {
-                                var userIds = [];
-                                for (var j = 0; j < selectData.length; j++) {
-                                    userIds.push(selectData[j].id);
-                                }
-                                layer.confirm('确定删除选中的记录吗？', function (i) {
-                                    layer.close(i);
-                                    layer.load(2);
-                                    admin.req('/sys/users/deleteRoleUser?roleId=' + data.id + '&userIds=' + userIds, {}, function (data) {
-                                        layer.closeAll('loading');
-                                        if (data.code === 200) {
-                                            table.reload('user-table');
-                                            layer.msg(data.msg, {icon: 1});
-                                        } else {
-                                            layer.msg(data.msg, {icon: 2});
-                                        }
-                                    }, 'DELETE');
-                                });
+                    // 删除按钮点击事件
+                    $('#role-user-btn-delete').click(function () {
+                        var checkStatus = table.checkStatus('role-user-table'); //user-table 即为基础参数 id 对应的值
+                        var selectData = checkStatus.data;
+                        // console.log(selectData);
+                        if (selectData.length === 0) {
+                            layer.msg("请先选择一条记录！", {icon: 2});
+                        } else {
+                            var userIds = [];
+                            for (var j = 0; j < selectData.length; j++) {
+                                userIds.push(selectData[j].id);
                             }
-
-                        });
-
-                        // 搜索按钮点击事件
-                        $('#user-btn-search').click(function () {
-                            var key = $('#user-search-key').val();
-                            var value = $('#user-search-value').val();
-                            table.reload('user-table', {where: {searchKey: key, searchValue: value}});
-                        });
+                            layer.confirm('确定删除选中的记录吗？', function (i) {
+                                layer.close(i);
+                                layer.load(2);
+                                admin.req('/sys/users/deleteRoleUser?roleId=' + data.id + '&userIds=' + userIds, {}, function (data) {
+                                    layer.closeAll('loading');
+                                    if (data.code === 200) {
+                                        table.reload('role-user-table');
+                                        layer.msg(data.msg, {icon: 1});
+                                    } else {
+                                        layer.msg(data.msg, {icon: 2});
+                                    }
+                                }, 'DELETE');
+                            });
+                        }
 
                     });
+
+                    // 搜索按钮点击事件
+                    $('#role-user-btn-search').click(function () {
+                        var key = $('#role-user-search-key').val();
+                        var value = $('#role-user-search-value').val();
+                        table.reload('role-user-table', {where: {searchKey: key, searchValue: value}});
+                    });
+                    // layui.use(['form', 'table', 'util', 'config', 'admin'], function () {
+                    //     var form = layui.form;
+                    //     var table = layui.table;
+                    //     var config = layui.config;
+                    //     var layer1 = layui.layer;
+                    //     var util = layui.util;
+                    //     var admin = layui.admin;
+                    //     var $ = layui.jquery;
+                    //
+                    //
+                    // });
                 }
             });
         };
