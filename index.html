@@ -38,18 +38,18 @@
                     </div>
                 </div>
                 <!--<div class="layui-form-item">-->
-                    <!--<label class="layui-form-label"><i class="layui-icon layui-icon-vercode"></i></label>-->
-                    <!--<div class="layui-input-block">-->
-                        <!--<div class="layui-row inline-block">-->
-                            <!--<div class="layui-col-xs7">-->
-                                <!--<input name="code" type="text" lay-verify="required" placeholder="验证码"-->
-                                       <!--class="layui-input">-->
-                            <!--</div>-->
-                            <!--<div class="layui-col-xs5" style="padding-left: 10px;">-->
-                                <!--<img class="login-captcha" src="https://www.oschina.net/action/user/captcha">-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <!--<label class="layui-form-label"><i class="layui-icon layui-icon-vercode"></i></label>-->
+                <!--<div class="layui-input-block">-->
+                <!--<div class="layui-row inline-block">-->
+                <!--<div class="layui-col-xs7">-->
+                <!--<input name="code" type="text" lay-verify="required" placeholder="验证码"-->
+                <!--class="layui-input">-->
+                <!--</div>-->
+                <!--<div class="layui-col-xs5" style="padding-left: 10px;">-->
+                <!--<img class="login-captcha" src="https://www.oschina.net/action/user/captcha">-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
                 <!--</div>-->
                 <div class="layui-form-item">
                     <a href="javascript:;" class="layui-link">帐号注册</a>
@@ -59,10 +59,10 @@
                     <button lay-filter="login-submit" class="layui-btn layui-btn-fluid" lay-submit>登 录</button>
                 </div>
                 <!--<div class="layui-form-item login-other">-->
-                    <!--<label>第三方登录</label>-->
-                    <!--<a href="javascript:;"><i class="layui-icon layui-icon-login-qq"></i></a>-->
-                    <!--<a href="javascript:;"><i class="layui-icon layui-icon-login-wechat"></i></a>-->
-                    <!--<a href="javascript:;"><i class="layui-icon layui-icon-login-weibo"></i></a>-->
+                <!--<label>第三方登录</label>-->
+                <!--<a href="javascript:;"><i class="layui-icon layui-icon-login-qq"></i></a>-->
+                <!--<a href="javascript:;"><i class="layui-icon layui-icon-login-wechat"></i></a>-->
+                <!--<a href="javascript:;"><i class="layui-icon layui-icon-login-weibo"></i></a>-->
                 <!--</div>-->
             </div>
         </div>
@@ -71,9 +71,9 @@
     <div class="login-footer">
         <p>© 2018 <a href="javascript:;" target="_blank">cswWeb版权所有</a></p>
         <!--<p>-->
-            <!--<span><a href="https://github.com/whvcse/EasyWeb" target="_blank">前往github</a></span>-->
-            <!--<span><a href="https://gitee.com/whvse/EasyWeb" target="_blank">前往gitee</a></span>-->
-            <!--<span><a href="javascript:;" target="_blank">文档说明</a></span>-->
+        <!--<span><a href="https://github.com/whvcse/EasyWeb" target="_blank">前往github</a></span>-->
+        <!--<span><a href="https://gitee.com/whvse/EasyWeb" target="_blank">前往gitee</a></span>-->
+        <!--<span><a href="javascript:;" target="_blank">文档说明</a></span>-->
         <!--</p>-->
     </div>
 </div>
@@ -97,8 +97,8 @@
             var field = obj.field;
             field.grant_type = 'password';
             field.scope = 'select';
-            field.client_id = 'client_2';
-            field.client_secret = '123456';
+            field.client_id = config.client_id;
+            field.client_secret = config.client_secret;
             // console.log(field);
             layer.load(2);
             $.ajax({
@@ -110,9 +110,11 @@
                     // console.log(data);
                     if (data.access_token) {
                         config.putToken(data);
-                        layer.msg('登录成功', {icon: 1}, function () {
-                            location.replace('./main.html');
-                        });
+                        // layer.msg('登录成功', {icon: 1}, function () {
+                        //     location.replace('./main.html');
+                        // });
+                        // layer.msg('登录成功', {icon: 1});
+                        location.replace('./main.html');
                     } else {
                         layer.closeAll('loading');
                         layer.msg('登录失败，请联系管理员', {icon: 5});

@@ -235,6 +235,7 @@
                     }, function (data) {
                         layer.closeAll('loading');
                         if (200 === data.code) {
+                            admin.refreshToken();
                             layer.msg(data.msg, {icon: 1});
                             layer.close(index);
                         } else {

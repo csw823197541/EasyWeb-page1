@@ -59,8 +59,9 @@
             admin.req('/sys/users/assignRole?' + 'userId=' + data.field.id + '&roleIds=' + data.field.roleId, {}, function (data) {
                 layer.closeAll('loading');
                 if (data.code === 200) {
-                    layer.msg(data.msg, {icon: 1});
-                    admin.finishPopupCenter();
+                    admin.refreshToken();
+                    // layer.msg(data.msg, {icon: 1});
+                    // admin.finishPopupCenter();
                 } else {
                     layer.msg(data.msg, {icon: 2});
                 }

@@ -6,6 +6,8 @@ layui.define(function (exports) {
         tableName: 'cswWeb',  // 存储表名
         autoRender: false,  // 窗口大小改变后是否自动重新渲染表格，解决layui数据表格非响应式的问题，目前实现的还不是很好，暂时关闭该功能
         pageTabs: true,   // 是否开启多标签
+        client_id: 'client_2',
+        client_secret: '123456',
         // 获取缓存的token
         getToken: function () {
             var t = layui.data(config.tableName).token;

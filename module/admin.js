@@ -159,6 +159,38 @@ layui.define(['config', 'layer'], function (exports) {
             }
             return false;
         },
+        // 从服务器刷新用户登录的token
+        refreshToken: function () {
+            var field = {};
+            field.refresh_token = config.getToken().refresh_token;
+            field.grant_type = 'refresh_token';
+            field.client_id = config.client_id;
+            field.client_secret = config.client_secret;
+            $.ajax({
+                url: config.base_server + '/oauth/token',
+                data: field,
+                type: 'POST',
+                dataType: 'JSON',
+                async: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data.access_token) {
+                        config.putToken(data);
+                        location.replace('./main.html');
+                    } else {
+                        layer.msg('刷新token失败，请联系管理员', {icon: 5});
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                    if (xhr.status === 400) {
+                        layer.msg('账号或密码错误', {icon: 5});
+                    } else {
+                        layer.msg('刷新token失败，请联系管理员', {icon: 5});
+                    }
+                }
+            });
+        },
         // 窗口大小改变监听
         onResize: function () {
             if (config.autoRender) {

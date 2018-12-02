@@ -154,8 +154,19 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
             // 退出登录
             $('#btnLogout').click(function () {
                 layer.confirm('确定退出登录？', function () {
-                    config.removeToken();
-                    location.replace('index.html');
+                    layer.load(2);
+                    admin.req('/logout', null, function (data) {
+                        layer.closeAll('loading');
+                        // console.log(data);
+                        if (200 === data.code) {
+                            config.removeToken();
+                            location.replace('index.html');
+                        } else {
+                            layer.msg(data.msg, {icon: 2});
+                        }
+                    }, 'GET');
+                    // config.removeToken();
+                    // location.replace('index.html');
                 });
             });
             // 修改密码
@@ -169,7 +180,8 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
                     path: 'components/tpl/userInfo.html',
                     area: ['750px', '480px'],
                     finish: function () {
-                        location.replace('main.html');
+                        // 刷新token同步请求，再刷新主界面
+                        admin.refreshToken();
                     }
                 });
             });
