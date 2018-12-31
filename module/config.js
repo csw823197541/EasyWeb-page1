@@ -51,7 +51,8 @@ layui.define(function (exports) {
             }, {
                 name: '角色管理',
                 url: '#!role',
-                path: 'system/role.html'
+                path: 'system/role.html',
+                auth: 'system/role'
             }, {
                 name: '权限管理',
                 url: '#!authority',
